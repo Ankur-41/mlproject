@@ -23,6 +23,8 @@ def evaluate_model(x_train,y_train,x_test,y_test,models):
     try:
         train_report = {}
         test_report = {}
+        best_model = None
+        best_score = float('-inf')
         for name,model in models.items():
             model.fit(x_train,y_train)
             y_train_pred = model.predict(x_train)
@@ -33,7 +35,18 @@ def evaluate_model(x_train,y_train,x_test,y_test,models):
             train_report[name] = train_score
             test_report[name] = test_score
 
-        return train_report,test_report
+            if test_score > best_score:
+                best_score = test_score
+                best_model = model
+
+        return train_report,test_report,best_model
+    except Exception as e:
+        raise CustomException(e,sys)
+    
+def load_object(file_path):
+    try:
+        with open(file_path,"rb") as file_obj:
+            return dill.load(file_obj)
     except Exception as e:
         raise CustomException(e,sys)
 

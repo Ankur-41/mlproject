@@ -44,15 +44,18 @@ class ModelTrainer:
                 'XGBRegressor()' : XGBRegressor()
             }
 
-            train_model_report,test_model_report = evaluate_model(x_train,y_train,x_test,y_test,models=models)
-            train_model_report = pd.DataFrame(train_model_report.items(),columns=['Model','R2_score']).sort_values(by=['R2_score'],ascending=False)
-            test_model_report = pd.DataFrame(test_model_report.items(),columns=['Model','R2_score']).sort_values(by=['R2_score'],ascending=False)
-
+            train_model_report,test_model_report,best_model = evaluate_model(x_train,y_train,x_test,y_test,models=models)
+            
         
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
-                obj = test_model_report
+                obj = best_model
             )
+
+            train_model_report = pd.DataFrame(train_model_report.items(),columns=['Model','R2_score']).sort_values(by=['R2_score'],ascending=False)
+            test_model_report = pd.DataFrame(test_model_report.items(),columns=['Model','R2_score']).sort_values(by=['R2_score'],ascending=False)
+
+
             logging.info('Best model found on both training and testing dataset')
            
             return test_model_report[:1]

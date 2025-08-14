@@ -25,9 +25,9 @@ class DataTransformation:
 
         '''
         try:
-            numerical_features = [ 'reading score','writing score']
-            categorical_features = ['gender', 'race/ethnicity', 'parental level of education', 'lunch',
-                                    'test preparation course']
+            numerical_features = [ 'reading_score','writing_score']
+            categorical_features = ['gender', 'race_ethnicity', 'parental_level_of_education', 'lunch',
+                                    'test_preparation_course']
             num_pipeline = Pipeline(
                 steps=[
                     ('imputer',SimpleImputer(strategy='median')),
@@ -67,8 +67,8 @@ class DataTransformation:
             logging.info('obtaining preprocessing object')
             preprocessing_obj = self.get_data_transformer_obj()
 
-            target_column = 'math score'
-            numerical_columns = ['writing score','reading score']
+            target_column = 'math_score'
+            numerical_columns = ['writing_score','reading_score']
 
             input_feature_train_df = train_df.drop(columns=[target_column],axis=1)
             target_feature_train_df = train_df[target_column]
@@ -76,6 +76,7 @@ class DataTransformation:
             target_feature_test_df = test_df[target_column]
 
             logging.info('applying preprocessing object on training and testing dataframe')
+    
 
             input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
@@ -91,8 +92,8 @@ class DataTransformation:
             )
 
             return (
-                train_arr,test_arr,
-                self.data_transformation_config.preprocessor_obj_file_path
+                train_arr,test_arr,self.data_transformation_config.preprocessor_obj_file_path
+                
             )
 
         except Exception as e:
